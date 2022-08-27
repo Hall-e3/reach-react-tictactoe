@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Deployer, Game, Home } from "./pages";
+import { Game, Home } from "./pages";
 function App() {
   return (
     <Router>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/deploy" element={<Deployer />} />
         <Route path="/game" element={<Game />} />
       </Routes>
     </Router>

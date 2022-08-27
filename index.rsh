@@ -19,7 +19,7 @@ export const main = Reach.App(() => {
 
   Player1.only(() => {
     const wager = declassify(interact.wager);
-    const handP1 = declassify(interact.makeChoice());
+    // const handP1 = declassify(interact.makeChoice());
   });
 
   Player1.publish(wager, handP1).pay(wager);
@@ -27,7 +27,7 @@ export const main = Reach.App(() => {
 
   Player2.only(() => {
     interact.acceptWager(wager);
-    const handP2 = declassify(interact.makeChoice());
+    // const handP2 = declassify(interact.makeChoice());
   });
 
   Player2.publish(handP2).pay(wager);

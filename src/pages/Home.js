@@ -12,7 +12,7 @@ function Home(props) {
   console.log(props.account_address);
   if (props.account_address) {
     if (props.account_address !== null || props.account_address !== undefined) {
-      window.location.href = "/deploy";
+      window.location.href = "/game";
     }
   }
   return (
@@ -43,7 +43,7 @@ function Home(props) {
               text={props.meta_mask_loading ? <Loader /> : "Play Game"}
               className="bg-black text-white font-bold p-4 rounded-md"
               block
-              onClick={() => (window.location.href = "/deploy")}
+              onClick={handleGetAccount}
             />
           </div>
         </div>
