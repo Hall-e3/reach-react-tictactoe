@@ -12,7 +12,7 @@ function Home(props) {
   console.log(props.account_address);
   if (props.account_address) {
     if (props.account_address !== null || props.account_address !== undefined) {
-      window.location.href = "/game";
+      window.location.href = "/deploy";
     }
   }
   return (

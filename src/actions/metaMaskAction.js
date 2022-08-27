@@ -9,7 +9,7 @@ export const get_account_address = () => async (dispatch) => {
     const accounts = await reach.getDefaultAccount();
     dispatch({
       type: ActionTypes.GET_META_MASK_ACCOUNT_SUCCESS,
-      payload: accounts,
+      payload: accounts.stdlib.UInt_max,
     });
   } catch (error) {
     dispatch({

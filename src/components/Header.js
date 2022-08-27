@@ -6,7 +6,7 @@ export default function Header() {
       <div className="w-full flex items-center space-x-4">
         <Logo />
         <div
-          className="text-green-700 hover:bg-green-200 hover:text-black p-2 rounded-md"
+          className="text-green-700 hover:bg-green-900 hover:text-black p-2 rounded-md cursor-pointer"
           onClick={() => (window.location.href = "/")}
         >
           <h4 className="text-1xl font-bold">Reach React Tic Tac Toe</h4>

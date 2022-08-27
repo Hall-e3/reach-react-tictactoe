@@ -103,7 +103,7 @@ function Game(props) {
       </div>
       <div className="flex-1 flex flex-col justify-center p-10 items-center gap-y-4">
         <div>
-          <h1>{`Welcome Player ${props.account_address}`}</h1>
+          <h1 className="text-2xl font-bold">{`Welcome Player ${props.account_address?._hex}`}</h1>
         </div>
         <Board
           onClick={(i) => handleClick(i)}
