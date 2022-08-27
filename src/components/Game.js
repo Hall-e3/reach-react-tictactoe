@@ -3,7 +3,7 @@ import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
-import * as backend from "../../build/index.main.mjs";
+import * as backend from "../main/index.main.mjs";
 const reducer = (state, action) => {
   switch (action.type) {
     case "JUMP":
@@ -33,8 +33,8 @@ const Player = () => ({
 });
 
 function Game(props) {
-  const ctcPlayer1 = props.account_address.contract(backend);
-  const ctcPlayer2 = props.account_address.contract(
+  const ctcPlayer1 = props.account_address?.contract(backend);
+  const ctcPlayer2 = props.account_address?.contract(
     backend,
     ctcPlayer1.getInfo()
   );
