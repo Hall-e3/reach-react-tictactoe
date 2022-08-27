@@ -1,17 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { Windmill } from "@windmill/react-ui";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import * as backend from "./build/index.main.mjs";
+import { loadStdlib } from "@reach-sh/stdlib";
+const reach = loadStdlib(process.env);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+const handToInt = { O: 0, D: 1, X: 2 };
+const intToOutcome = ["Player O wins!", "Draw!", "Player X wins!"];
+const { standardUnit } = reach;
+const defaults = { defaultFundAmt: "10", defaultWager: "3", standardUnit };
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Windmill>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Windmill>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
