@@ -1,9 +1,12 @@
 import React from "react";
+import { loadStdlib } from "@reach-sh/stdlib";
+import * as backend from "../main/index.main.mjs";
 import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
-import * as backend from "../main/index.main.mjs";
+const reach = loadStdlib(process.env);
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "JUMP":
@@ -23,25 +26,38 @@ const reducer = (state, action) => {
   }
 };
 
-const Player = () => ({
-  makeChoice: () => {
-    return 0;
-  },
-  seeChoice: (winner) => {
-    console.log(`Winnner is ${winner}`);
-  },
-});
-
 function Game(props) {
-  const ctcPlayer1 = props.account_address?.contract(backend);
-  const ctcPlayer2 = props.account_address?.contract(
+  const [outcome, setOutCome] = React.useState(null);
+  console.log(outcome);
+  const ctcPlayerX = props.account_address?.contract(backend);
+  const ctcPlayerO = props.account_address?.contract(
     backend,
-    ctcPlayer1.getInfo()
+    ctcPlayerO.getInfo()
   );
-  React.useEffect(() => {}, []);
 
-  const wager = "0.000001";
-  console.log(props.account_address);
+  const Player = (person) => ({
+    seeOutCome: (outcome) => {
+      console.log(`Winnner is ${outcome}`);
+      console.log(`${person} has played ....`);
+      return outcome;
+    },
+  });
+
+  const AllPromise = async (ctcPlayerX, ctcPlayerO) => {
+    await Promise.all([
+      ctcPlayerX?.PlayerX({
+        ...Player("PlayerX"),
+      }),
+      ctcPlayerO?.PlayerO({
+        ...Player("PlayerO"),
+      }),
+    ]);
+  };
+
+  React.useEffect(() => {
+    AllPromise();
+  }, []);
+
   const [state, dispatch] = React.useReducer(reducer, {
     xIsNext: true,
     history: [{ squares: Array(9).fill(null) }],
@@ -65,6 +81,21 @@ function Game(props) {
 
   const currentSquare = history[history.length - 1];
   const winner = calculateWinner(currentSquare.squares);
+
+  const outcomes = ["X", "D", "O"];
+
+  const handleOutCome = () => {
+    for (let i = 0; i <= outcomes.length; i++) {
+      if (winner === outcomes[i]) {
+        return i;
+      }
+    }
+  };
+  const legs = handleOutCome();
+
+  React.useEffect(() => {
+    setOutCome(legs);
+  }, [legs]);
 
   const status = winner
     ? winner === "D"

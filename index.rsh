@@ -1,47 +1,38 @@
 "reach 0.1";
 
+import { initializeConnect } from "react-redux/es/components/connect";
+
 const Player = {
-  makeChoice: Fun([], UInt),
-  seeChoice: Fun([UInt], Null),
+  seeOutCome: Fun([UInt], UInt),
 };
 
 export const main = Reach.App(() => {
-  const Player1 = Participant("Player1", {
+  const PlayerX = Participant("PlayerX", {
     ...Player,
     wager: UInt,
   });
-
-  const Player2 = Participant("Player2", {
+  const PlayerO = Participant("PlayerO", {
     ...Player,
     acceptWager: Fun([UInt], Null),
   });
   init();
 
-  Player1.only(() => {
+  PlayerX.only(() => {
     const wager = declassify(interact.wager);
-    // const handP1 = declassify(interact.makeChoice());
   });
-
-  Player1.publish(wager, handP1).pay(wager);
+  PlayerX.publish(wager).pay(wager);
   commit();
 
-  Player2.only(() => {
+  PlayerO.only(() => {
     interact.acceptWager(wager);
-    // const handP2 = declassify(interact.makeChoice());
   });
+  PlayerO.publish(wager).pay(wager);
 
-  Player2.publish(handP2).pay(wager);
+  const outcome = seeOutCome();
 
-const outcome = 1;
-
-  const [forPlayer1, forPlayer2] =
-    outcome == 2 ? [2, 0] : outcome == 0 ? [0, 2] : /* tie      */ [1, 1];
-  transfer(forPlayer1 * wager).to(Player1);
-  transfer(forPlayer2 * wager).to(Player2);
-
+  const [forPlayerX, forPlayerO] =
+    outcome === 2 ? [2, 0] : outcome === 0 ? [0, 2] : /* tie      */ [1, 1];
+  transfer(forPlayerX * wager).to(PlayerX);
+  transfer(forPlayerO * wager).to(PlayerO);
   commit();
-
-  each([Player1, Player2], () => {
-    interact.seeChoice(outcome);
-  });
 });
