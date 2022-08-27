@@ -3,6 +3,7 @@ import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
+import * as backend from "../../build/index.main.mjs";
 const reducer = (state, action) => {
   switch (action.type) {
     case "JUMP":
@@ -21,7 +22,25 @@ const reducer = (state, action) => {
       return state;
   }
 };
+
+const Player = () => ({
+  makeChoice: () => {
+    return 0;
+  },
+  seeChoice: (winner) => {
+    console.log(`Winnner is ${winner}`);
+  },
+});
+
 function Game(props) {
+  const ctcPlayer1 = props.account_address.contract(backend);
+  const ctcPlayer2 = props.account_address.contract(
+    backend,
+    ctcPlayer1.getInfo()
+  );
+  React.useEffect(() => {}, []);
+
+  const wager = "0.000001";
   console.log(props.account_address);
   const [state, dispatch] = React.useReducer(reducer, {
     xIsNext: true,
@@ -112,7 +131,7 @@ const mapStateToProps = (state) => ({
   account_address: state.metaMask.account_address,
 });
 
-export default connect(mapStateToProps,{})(Game);
+export default connect(mapStateToProps, {})(Game);
 
 const calculateWinner = (squares) => {
   const winnerLines = [
