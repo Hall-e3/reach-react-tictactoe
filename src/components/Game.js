@@ -1,61 +1,16 @@
 import React from "react";
-import { loadStdlib } from "@reach-sh/stdlib";
-import * as backend from "../main/index.main.mjs";
 import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
-const reach = loadStdlib(process.env);
+import useUtils from "../hooks/useUtils.js";
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "JUMP":
-      return {
-        ...state,
-        xIsNext: action.payload.step % 2 === 0,
-        history: state.history.slice(0, action.payload.step + 1),
-      };
-    case "MOVE":
-      return {
-        ...state,
-        history: state.history.concat({ squares: action.payload.squares }),
-        xIsNext: !state.xIsNext,
-      };
-    default:
-      return state;
-  }
-};
 
 function Game(props) {
-  const outcomes = ["X", "D", "O"];
+  const outcomes = ["X", "O", "D"];
   const [outcome, setOutCome] = React.useState(null);
-  console.log(outcome);
-  const ctcPlayerX = props.account_address?.contract(backend);
-  const ctcPlayerO = props.account_address?.contract(
-    backend,
-    ctcPlayerO.getInfo()
-  );
-
-  const Player = () => ({
-    getValue: () => {
-      return outcome;
-    },
-  });
-  
-  const AllPromise = async (ctcPlayerX, ctcPlayerO) => {
-    await Promise.all([
-      ctcPlayerX?.PlayerX({
-        ...Player("PlayerX"),
-      }),
-      ctcPlayerO?.PlayerO({
-        ...Player("PlayerO"),
-      }),
-    ]);
-  };
-
-  React.useEffect(() => {
-    AllPromise();
-  }, []);
+  const { Admin } = useUtils();
+  Admin.winner(outcome);
 
   const [state, dispatch] = React.useReducer(reducer, {
     xIsNext: true,
@@ -83,10 +38,10 @@ function Game(props) {
       }
     }
   };
-  const legs = handleOutCome();
+  const value = handleOutCome();
   React.useEffect(() => {
-    setOutCome(legs);
-  }, [legs]);
+    setOutCome(value);
+  }, [value]);
 
   const status = winner
     ? winner === "D"
@@ -137,6 +92,24 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {})(Game);
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "JUMP":
+      return {
+        ...state,
+        xIsNext: action.payload.step % 2 === 0,
+        history: state.history.slice(0, action.payload.step + 1),
+      };
+    case "MOVE":
+      return {
+        ...state,
+        history: state.history.concat({ squares: action.payload.squares }),
+        xIsNext: !state.xIsNext,
+      };
+    default:
+      return state;
+  }
+};
 const calculateWinner = (squares) => {
   const winnerLines = [
     [0, 1, 2],

@@ -2,7 +2,7 @@ import { ActionTypes } from "../actions/types";
 
 const initialState = {
   meta_mask_loading: false,
-  account_address: null,
+  wallet: null,
   success: false,
   error: null,
 };
@@ -17,7 +17,7 @@ export default function metaMask(state = initialState, action) {
     case ActionTypes.GET_META_MASK_ACCOUNT_SUCCESS:
       return {
         ...state,
-        account_address: action.payload,
+        wallet: action.payload,
         success: true,
         meta_mask_loading: false,
       };

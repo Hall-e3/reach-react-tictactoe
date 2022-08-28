@@ -1,20 +1,8 @@
 import React from "react";
-import { CustomButton, Header, Loader } from "../components";
+import { CustomButton, Header } from "../components";
 import side from "../assets/images/cryptocurrencies.png";
-import { connect } from "react-redux";
-import { get_account_address } from "../actions/metaMaskAction";
-function Home(props) {
-  const handleGetAccount = () => {
-    if (typeof window !== "undefined") {
-      props.get_account_address();
-    }
-  };
-  console.log(props.account_address);
-  if (props.account_address) {
-    if (props.account_address !== null || props.account_address !== undefined) {
-      window.location.href = "/game";
-    }
-  }
+
+export default function Home() {
   return (
     <div>
       <Header />
@@ -40,10 +28,10 @@ function Home(props) {
           </div>
           <div>
             <CustomButton
-              text={props.meta_mask_loading ? <Loader /> : "Play Game"}
+              text="Play Game"
               className="bg-black text-white font-bold p-4 rounded-md"
               block
-              onClick={handleGetAccount}
+              onClick={() => (window.location.href = "/game")}
             />
           </div>
         </div>
@@ -54,12 +42,3 @@ function Home(props) {
     </div>
   );
 }
-
-const mapStateToProps = (state) => ({
-  metaMask: state.metaMask,
-  meta_mask_loading: state.metaMask.meta_mask_loading,
-  account_address: state.metaMask.account_address,
-  error: state.metaMask.error,
-});
-
-export default connect(mapStateToProps, { get_account_address })(Home);
