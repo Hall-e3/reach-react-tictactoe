@@ -18,6 +18,7 @@ function Deployer(props) {
   const handleWager = async (e) => {
     e.preventDefault();
     if (wager) {
+      console.log(wager);
       DeployerPromises(wager);
     }
     setDeploy(true);
@@ -26,7 +27,7 @@ function Deployer(props) {
   console.log(props.wallet);
   if (props.wallet) {
     if (props.wallet !== null || props.wallet !== undefined) {
-      window.location.href = "/play";
+      window.location.href = "/home";
     }
   }
 

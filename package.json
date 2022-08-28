@@ -11,6 +11,8 @@
     "@testing-library/user-event": "^13.5.0",
     "@windmill/react-ui": "^0.6.0",
     "autoprefixer": "^10.4.8",
+    "flowbite": "^1.5.2",
+    "flowbite-react": "^0.1.10",
     "postcss": "^8.4.16",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
