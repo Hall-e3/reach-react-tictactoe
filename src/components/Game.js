@@ -27,6 +27,7 @@ const reducer = (state, action) => {
 };
 
 function Game(props) {
+  const outcomes = ["X", "D", "O"];
   const [outcome, setOutCome] = React.useState(null);
   console.log(outcome);
   const ctcPlayerX = props.account_address?.contract(backend);
@@ -35,14 +36,12 @@ function Game(props) {
     ctcPlayerO.getInfo()
   );
 
-  const Player = (person) => ({
-    seeOutCome: (outcome) => {
-      console.log(`Winnner is ${outcome}`);
-      console.log(`${person} has played ....`);
+  const Player = () => ({
+    getValue: () => {
       return outcome;
     },
   });
-
+  
   const AllPromise = async (ctcPlayerX, ctcPlayerO) => {
     await Promise.all([
       ctcPlayerX?.PlayerX({
@@ -64,10 +63,6 @@ function Game(props) {
   });
   const { xIsNext, history } = state;
 
-  const jumpTo = (step) => {
-    dispatch({ type: "JUMP", payload: { step } });
-  };
-
   const handleClick = (i) => {
     const currentSquare = history[history.length - 1]; //last element
     const squares = currentSquare.squares.slice(); // creating a copy of squares
@@ -81,9 +76,6 @@ function Game(props) {
 
   const currentSquare = history[history.length - 1];
   const winner = calculateWinner(currentSquare.squares);
-
-  const outcomes = ["X", "D", "O"];
-
   const handleOutCome = () => {
     for (let i = 0; i <= outcomes.length; i++) {
       if (winner === outcomes[i]) {
@@ -92,7 +84,6 @@ function Game(props) {
     }
   };
   const legs = handleOutCome();
-
   React.useEffect(() => {
     setOutCome(legs);
   }, [legs]);
@@ -102,18 +93,6 @@ function Game(props) {
       ? "Draw"
       : "Winner is " + winner
     : "Next player is " + (xIsNext ? "X" : "O");
-  const moves = history.map((step, move) => {
-    const game_description = move ? "Go to step#" + move : "Start the Game";
-    return (
-      <div className="shadow-lg rounded-lg p-2  m-2 text-black" key={move}>
-        <CustomButton
-          className="p-2 text-black"
-          onClick={() => jumpTo(move)}
-          text={game_description}
-        />
-      </div>
-    );
-  });
   return (
     <div
       className={`w-full h-full grid grid-cols-1 sm:grid-cols-2 ${
@@ -147,12 +126,6 @@ function Game(props) {
           onClick={() => window.location.reload()}
         />
       </div>
-      {/* <div className=" text-black m-15 flex-1">
-        <div className="text-4xl text-center font-bold">{status}</div>
-        <div className="flex flex-wrap justify-center items-center text-black">
-          {moves}
-        </div>
-      </div> */}
     </div>
   );
 }
