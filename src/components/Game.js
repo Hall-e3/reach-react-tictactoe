@@ -4,7 +4,7 @@ import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
 import * as backend from "../build/index.main.mjs";
-import { get_winner } from "../actions/metaMaskAction";
+
 function Game(props) {
   const outcomes = ["X", "O", "D"];
   const [outcome, setOutCome] = React.useState(null);
@@ -117,7 +117,7 @@ const mapStateToProps = (state) => ({
   winner: state.metaMask.winner,
 });
 
-export default connect(mapStateToProps, { get_winner })(Game);
+export default connect(mapStateToProps, { })(Game);
 
 const reducer = (state, action) => {
   switch (action.type) {

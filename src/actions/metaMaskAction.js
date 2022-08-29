@@ -67,20 +67,4 @@ export const accept_wager = (wallet, playerInfo) => async (dispatch) => {
   }
 };
 
-export const get_winner = (winner) => async (dispatch) => {
-  dispatch({
-    type: ActionTypes.SET_WINNER_LOADING,
-  });
-  try {
-    const winnerResults = await this.ctc.apis.Admin.winner(winner);
-    dispatch({
-      type: ActionTypes.SET_WINNER_SUCCESS,
-      payload: winnerResults,
-    });
-  } catch (error) {
-    dispatch({
-      type: ActionTypes.SET_WINNER_FAIL,
-      payload: error,
-    });
-  }
-};
+
