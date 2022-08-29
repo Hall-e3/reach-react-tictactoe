@@ -31,7 +31,7 @@ export const main = Reach.App(() => {
     false,
     0,
     0,
-    Array.replicate(3, Deployer),
+    Array.replicate(2, Deployer),
   ])
     .invariant(balance() == amt)
     .while(!end)
@@ -55,7 +55,7 @@ export const main = Reach.App(() => {
       },
       (_) => 0,
       (win, k) => {
-        transfer(balance()).to(addrs[win % 3]);
+        transfer(balance()).to(addrs[win % 2]);
         k(null);
         return [true, 0, howMany, addrs];
       }

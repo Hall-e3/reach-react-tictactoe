@@ -16,11 +16,7 @@ function Deployer(props) {
   const [wager, setWager] = React.useState("");
   const { wallet, playerInfo, deployContract } = props;
 
-  console.log(wallet);
-  console.log(wager);
-  console.log(playerInfo);
-  console.log(deployContract);
-
+  console.log(props.accepted);
   const handleWager = (e) => {
     e.preventDefault();
     if (wager) {
@@ -28,14 +24,14 @@ function Deployer(props) {
     }
   };
   const handleAcceptWager = () => {
-    console.log("Am accepting");
     if (wallet !== null && playerInfo !== null) {
       props.accept_wager(wallet, playerInfo);
     }
+    setOpen(false);
   };
 
   if (props.accepted) {
-    window.location.href = "/home";
+    window.location.href = "/game";
   }
 
   React.useEffect(() => {
@@ -166,6 +162,7 @@ const mapStateToProps = (state) => ({
   playerInfo: state.metaMask.playerInfo,
   deployer_loading: state.metaMask.deployer_loading,
   deployContract: state.metaMask.deployContract,
+  accepted: state.metaMask.accepted,
 });
 
 export default connect(mapStateToProps, {

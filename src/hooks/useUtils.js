@@ -1,7 +1,7 @@
 import React from "react";
 import { loadStdlib } from "@reach-sh/stdlib";
 import * as backend from "../build/index.main.mjs";
-import { connect, useSelector } from "react-redux";
+import { connect} from "react-redux";
 import { get_account_address } from "../actions/metaMaskAction";
 const reach = loadStdlib("ETH");
 

@@ -11,6 +11,8 @@ const initialState = {
   accepted: false,
   accept_loading: false,
   acceptValue: null,
+  winner: null,
+  winner_loading: false,
 };
 
 export default function metaMask(state = initialState, action) {
@@ -75,6 +77,25 @@ export default function metaMask(state = initialState, action) {
         ...state,
         accept_loading: false,
         accepted: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.SET_WINNER_LOADING:
+      return {
+        ...state,
+        winner_loading: true,
+      };
+    case ActionTypes.SET_WINNER_SUCCESS:
+      return {
+        ...state,
+        winner: action.payload,
+        winner_loading: false,
+      };
+
+    case ActionTypes.SET_WINNER_FAIL:
+      return {
+        ...state,
+        winner_loading: false,
         error: action.payload,
       };
     default:

@@ -4,8 +4,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Deployer />} />
-        <Route  path="/home" element={<Home />} />
+        <Route  path="/" element={<Home />} />
+        <Route exact path="/deploy" element={<Deployer />} />
         {/* <Route  path="/play" element={<Players />} /> */}
         <Route path="/game" element={<Game />} />
       </Routes>

@@ -3,13 +3,35 @@ import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
-import useUtils from "../hooks/useUtils.js";
-
-
+import * as backend from "../build/index.main.mjs";
+import { get_winner } from "../actions/metaMaskAction";
 function Game(props) {
   const outcomes = ["X", "O", "D"];
   const [outcome, setOutCome] = React.useState(null);
-  const { Admin } = useUtils();
+  console.log(outcome);
+  console.log(props.winner);
+  const ctcPlayerX = props.wallet?.contract(backend);
+  const ctcPlayerO = props.wallet?.contract(backend, ctcPlayerX.getInfo());
+
+  // React.useEffect(() => {
+  //   props.get_winner(outcome);
+  // }, [outcome]);
+  class Admins {
+    constructor(info, acct) {
+      this.acc = props.wallet;
+      this.ctc = this.acc?.contract(backend, props.playerInfo);
+    }
+    winner = async (winner) => {
+      try {
+        const outcomes = ["X", "O", "D"];
+        await this.ctc.apis.Admin.winner(winner);
+        console.log(` The winner is ${outcomes[winner % 3]}`);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }
+  const Admin = new Admins(props.wallet, ctcPlayerX);
   Admin.winner(outcome);
 
   const [state, dispatch] = React.useReducer(reducer, {
@@ -88,9 +110,11 @@ function Game(props) {
 const mapStateToProps = (state) => ({
   metaMask: state.metaMask,
   account_address: state.metaMask.account_address,
+  playerInfo: state.metaMask.playerInfo,
+  winner: state.metaMask.winner,
 });
 
-export default connect(mapStateToProps, {})(Game);
+export default connect(mapStateToProps, { get_winner })(Game);
 
 const reducer = (state, action) => {
   switch (action.type) {
