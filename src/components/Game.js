@@ -10,18 +10,20 @@ function Game(props) {
   const [outcome, setOutCome] = React.useState(null);
   console.log(outcome);
   console.log(props.winner);
-  const ctcPlayerX = props.wallet?.contract(backend);
-  const ctcPlayerO = props.wallet?.contract(backend, ctcPlayerX.getInfo());
 
-  // React.useEffect(() => {
-  //   props.get_winner(outcome);
-  // }, [outcome]);
   class Admins {
     constructor(info, acct) {
-      this.acc = props.wallet;
+      this.acc = acct;
       this.ctc = this.acc?.contract(backend, props.playerInfo);
     }
     winner = async (winner) => {
+      console.log(props.wallet);
+      console.log(props.playerInfo);
+      console.log({
+        acc: this.acc,
+        ctc: this.ctc,
+        winner: winner,
+      });
       try {
         const outcomes = ["X", "O", "D"];
         await this.ctc.apis.Admin.winner(winner);
@@ -31,7 +33,8 @@ function Game(props) {
       }
     };
   }
-  const Admin = new Admins(props.wallet, ctcPlayerX);
+
+  const Admin = new Admins(props.playerInfo, props.wallet);
   Admin.winner(outcome);
 
   const [state, dispatch] = React.useReducer(reducer, {
@@ -109,7 +112,7 @@ function Game(props) {
 
 const mapStateToProps = (state) => ({
   metaMask: state.metaMask,
-  account_address: state.metaMask.account_address,
+  wallet: state.metaMask.wallet,
   playerInfo: state.metaMask.playerInfo,
   winner: state.metaMask.winner,
 });

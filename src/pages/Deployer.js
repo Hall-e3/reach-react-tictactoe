@@ -17,6 +17,7 @@ function Deployer(props) {
   const { wallet, playerInfo, deployContract } = props;
 
   console.log(props.accepted);
+
   const handleWager = (e) => {
     e.preventDefault();
     if (wager) {
