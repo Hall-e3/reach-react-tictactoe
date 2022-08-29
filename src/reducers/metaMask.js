@@ -5,6 +5,12 @@ const initialState = {
   wallet: null,
   success: false,
   error: null,
+  playerInfo: null,
+  deployer_loading: false,
+  deployContract: false,
+  accepted: false,
+  accept_loading: false,
+  acceptValue: null,
 };
 
 export default function metaMask(state = initialState, action) {
@@ -27,6 +33,48 @@ export default function metaMask(state = initialState, action) {
         ...state,
         meta_mask_loading: false,
         success: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.SET_CONTRACT_INFO_LOADING:
+      return {
+        ...state,
+        deployer_loading: true,
+      };
+    case ActionTypes.SET_CONTRACT_INFO_SUCCESS:
+      return {
+        ...state,
+        playerInfo: action.payload,
+        deployContract: true,
+        deployer_loading: false,
+      };
+
+    case ActionTypes.SET_CONTRACT_INFO_FAIL:
+      return {
+        ...state,
+        deployer_loading: false,
+        deployContract: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.ACCEPT_WAGER_LOADING:
+      return {
+        ...state,
+        accept_loading: true,
+      };
+    case ActionTypes.ACCEPT_WAGER_SUCCESS:
+      return {
+        ...state,
+        acceptValue: action.payload,
+        accepted: true,
+        accept_loading: false,
+      };
+
+    case ActionTypes.ACCEPT_WAGER_FAIL:
+      return {
+        ...state,
+        accept_loading: false,
+        accepted: false,
         error: action.payload,
       };
     default:

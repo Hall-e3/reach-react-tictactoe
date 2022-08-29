@@ -31,7 +31,7 @@ export default function Home() {
               text="Play Game"
               className="bg-black text-white font-bold p-4 rounded-md"
               block
-              onClick={() => (window.location.href = "/play")}
+              onClick={() => (window.location.href = "/game")}
             />
           </div>
         </div>

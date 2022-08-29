@@ -1,15 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CustomButton, Modal } from "../components";
-import { get_account_address } from "../actions/metaMaskAction";
+import { CustomButton, Loader, Modal } from "../components";
+import { get_account_address, accept_wager } from "../actions/metaMaskAction";
 import leftside from "../assets/images/cryptocurrencies.png";
 
 function Player(props) {
   const [open, setOpen] = React.useState(false);
   const [player, setPlayer] = React.useState(null);
-  const handleGetAccount = () => {
+  // const handleGetAccount = () => {
+  //   props.get_account_address();
+  // };
+  React.useEffect(() => {
     props.get_account_address();
+  }, []);
+
+  console.log(props.wallet);
+  console.log(props.playerInfo);
+  console.log(props.accept_loading);
+  
+  const handleAcceptWager = () => {
+    console.log("Am accepting");
+    if (props.wallet !== null && props.playerInfo !== null) {
+      props.accept_wager(props.wallet, props.playerInfo);
+    }
   };
+
+  if (props.accepted) {
+    window.location.href = "/game";
+  }
+
   return (
     <div
       className="w-full h-screen bg-no-repeat bg-contain"
@@ -51,7 +70,26 @@ function Player(props) {
             </div>
           </div>
         </div>
-        {open && <Modal setOpen={setOpen} player={player} />}
+        {open && (
+          <Modal setOpen={setOpen} player={player}>
+            <CustomButton
+              text={props.accept_loading ? <Loader /> : "Accept Wager"}
+              onClick={handleAcceptWager}
+              data-modal-toggle="popup-modal"
+              type="button"
+              className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            />
+            {!props.accept_loading && (
+              <CustomButton
+                onClick={() => setOpen(false)}
+                text="Decline Wager"
+                data-modal-toggle="popup-modal"
+                type="button"
+                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              />
+            )}
+          </Modal>
+        )}
       </div>
     </div>
   );
@@ -62,6 +100,11 @@ const mapStateToProps = (state) => ({
   meta_mask_loading: state.metaMask.meta_mask_loading,
   wallet: state.metaMask.wallet,
   error: state.metaMask.error,
+  accept_loading: state.metaMask.accept_loading,
+  accepted: state.metaMask.accepted,
+  playerInfo: state.metaMask.playerInfo,
 });
 
-export default connect(mapStateToProps, { get_account_address })(Player);
+export default connect(mapStateToProps, { get_account_address, accept_wager })(
+  Player
+);

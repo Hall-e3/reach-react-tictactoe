@@ -1,18 +1,23 @@
 import React from "react";
 import { loadStdlib } from "@reach-sh/stdlib";
 import * as backend from "../build/index.main.mjs";
-import { useSelector } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import { get_account_address } from "../actions/metaMaskAction";
 const reach = loadStdlib("ETH");
 
-export const useUtils = (wager) => {
-  const { wallet } = useSelector((state) => state.metaMask);
-  console.log(wallet);
+function useUtils(props) {
+  const [wager, setWager] = React.useState("");
+  console.log(props.wallet);
 
-  const ctcPlayerX = wallet?.contract(backend);
-  const ctcPlayerO = wallet?.contract(backend, ctcPlayerX.getInfo());
+  const ctcPlayerX = props.wallet?.contract(backend);
+  const ctcPlayerO = props.wallet?.contract(backend, ctcPlayerX.getInfo());
+
+  const handleInputChange = (e) => {
+    setWager(e.target.value);
+  };
 
   const API = async (name) => {
-    const ctc = wallet.contract(backend, await ctcPlayerX.getInfo());
+    const ctc = props.wallet.contract(backend, await ctcPlayerX.getInfo());
     const acceptWager = async () => {
       try {
         await ctc.apis.Players.acceptWager();
@@ -27,7 +32,7 @@ export const useUtils = (wager) => {
 
   class Admins {
     constructor(info, acct) {
-      this.acc = wallet;
+      this.acc = props.wallet;
       this.ctc = this.acc?.contract(backend, info);
     }
     winner = async (winner) => {
@@ -42,9 +47,10 @@ export const useUtils = (wager) => {
     };
   }
 
-  const Admin = new Admins(wallet, ctcPlayerX);
+  const Admin = new Admins(props.wallet, ctcPlayerX);
 
-  const DeployerPromises = async () => {
+  const DeployerPromises = async (wager) => {
+    console.log(wager);
     try {
       await Promise.all([
         backend.Deployer(ctcPlayerX, {
@@ -73,7 +79,16 @@ export const useUtils = (wager) => {
   // console.log("Goodbye, Deployer and Api!");
   return {
     Admin,
+    wager,
     API,
+    handleInputChange,
     DeployerPromises,
   };
-};
+}
+
+const mapStateToProps = (state) => ({
+  metaMask: state.metaMask,
+  wallet: state.metaMask.wallet,
+});
+
+export default connect(mapStateToProps, { get_account_address })(useUtils);

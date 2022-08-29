@@ -6,7 +6,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Deployer />} />
         <Route  path="/home" element={<Home />} />
-        <Route  path="/play" element={<Players />} />
+        {/* <Route  path="/play" element={<Players />} /> */}
         <Route path="/game" element={<Game />} />
       </Routes>
     </Router>

@@ -3,7 +3,7 @@ import Board from "../components/Board";
 import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
-import {useUtils} from "../hooks/useUtils.js";
+import useUtils from "../hooks/useUtils.js";
 
 
 function Game(props) {
