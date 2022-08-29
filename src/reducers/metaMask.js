@@ -15,6 +15,7 @@ const initialState = {
 
 export default function metaMask(state = initialState, action) {
   switch (action.type) {
+    //get meta mask account
     case ActionTypes.GET_META_MASK_ACCOUNT_LOADING:
       return {
         ...state,
@@ -35,13 +36,14 @@ export default function metaMask(state = initialState, action) {
         success: false,
         error: action.payload,
       };
-
+    //set contract info
     case ActionTypes.SET_CONTRACT_INFO_LOADING:
       return {
         ...state,
         deployer_loading: true,
       };
     case ActionTypes.SET_CONTRACT_INFO_SUCCESS:
+      localStorage.setItem("playerInfo", action.payload);
       return {
         ...state,
         playerInfo: action.payload,
@@ -56,7 +58,7 @@ export default function metaMask(state = initialState, action) {
         deployContract: false,
         error: action.payload,
       };
-
+    //accept wager
     case ActionTypes.ACCEPT_WAGER_LOADING:
       return {
         ...state,
@@ -78,7 +80,6 @@ export default function metaMask(state = initialState, action) {
         error: action.payload,
       };
 
-    
     default:
       return state;
   }

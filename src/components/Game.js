@@ -4,38 +4,41 @@ import CustomButton from "./commons/CustomButton";
 import leftside from "../assets/images/cryptocurrencies.png";
 import { connect } from "react-redux";
 import * as backend from "../build/index.main.mjs";
-
+import {
+  get_account_address,
+  set_contract_info,
+} from "../actions/metaMaskAction";
 function Game(props) {
   const outcomes = ["X", "O", "D"];
-  const [outcome, setOutCome] = React.useState(null);
-  console.log(outcome);
-  console.log(props.winner);
+  // const [outcome, setOutCome] = React.useState(null);
+  // console.log(outcome);
+  const playerInfo = localStorage.getItem("playerInfo");
+  console.log(playerInfo);
 
+  React.useState(() => {
+    props.get_account_address();
+  }, []);
   class Admins {
     constructor(info, acct) {
       this.acc = acct;
-      this.ctc = this.acc?.contract(backend, props.playerInfo);
+      this.ctc = this.acc?.contract(backend, info);
     }
     winner = async (winner) => {
-      console.log(props.wallet);
-      console.log(props.playerInfo);
       console.log({
         acc: this.acc,
         ctc: this.ctc,
         winner: winner,
       });
       try {
-        const outcomes = ["X", "O", "D"];
         await this.ctc.apis.Admin.winner(winner);
-        console.log(` The winner is ${outcomes[winner % 3]}`);
       } catch (error) {
         console.log(error);
       }
     };
   }
 
-  const Admin = new Admins(props.playerInfo, props.wallet);
-  Admin.winner(outcome);
+  const Admin = new Admins(playerInfo, props.wallet);
+  // Admin.winner(outcome);
 
   const [state, dispatch] = React.useReducer(reducer, {
     xIsNext: true,
@@ -65,7 +68,7 @@ function Game(props) {
   };
   const value = handleOutCome();
   React.useEffect(() => {
-    setOutCome(value);
+    Admin.winner(value);
   }, [value]);
 
   const status = winner
@@ -117,7 +120,10 @@ const mapStateToProps = (state) => ({
   winner: state.metaMask.winner,
 });
 
-export default connect(mapStateToProps, { })(Game);
+export default connect(mapStateToProps, {
+  get_account_address,
+  set_contract_info,
+})(Game);
 
 const reducer = (state, action) => {
   switch (action.type) {
