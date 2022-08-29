@@ -1,7 +1,9 @@
 {
-  "files.associations": {
-    "*.rsh": "javascript"
-  },
-  "javascript.suggest.completeFunctionCalls": true,
-  "cSpell.words": ["leftside"]
+    "files.associations": {
+        "*.rsh": "javascript"
+    },
+    "javascript.suggest.completeFunctionCalls": true,
+    "cSpell.words": [
+        "leftside"
+    ]
 }

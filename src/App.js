@@ -5,8 +5,8 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Deployer />} />
-        <Route exact path="/home" element={<Home />} />
-        <Route exact path="/play" element={<Players />} />
+        <Route  path="/home" element={<Home />} />
+        <Route  path="/play" element={<Players />} />
         <Route path="/game" element={<Game />} />
       </Routes>
     </Router>

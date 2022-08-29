@@ -1,5 +1,5 @@
 import React from "react";
-import useUtils from "../../hooks/useUtils";
+import {useUtils} from "../../hooks/useUtils";
 import CustomButton from "./CustomButton";
 
 export default function Modal({ player, setOpen }) {
@@ -8,6 +8,7 @@ export default function Modal({ player, setOpen }) {
   const handleAcceptWager = () => {
     API();
     setAccept(true);
+    console.log("accept wager");
   };
   if (accept) {
     window.location.href = "/game";

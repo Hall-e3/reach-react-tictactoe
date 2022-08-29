@@ -3,33 +3,27 @@ import { connect } from "react-redux";
 import { CustomButton, Loader, Form, Input } from "../components";
 import { get_account_address } from "../actions/metaMaskAction";
 import leftside from "../assets/images/cryptocurrencies.png";
-import useUtils from "../hooks/useUtils";
+import { useUtils } from "../hooks/useUtils";
 
 function Deployer(props) {
   const [deploy, setDeploy] = React.useState(false);
-  const { DeployerPromises, wager, handleInputChange } = useUtils();
+  const [wager, setWager] = React.useState("");
+  const { DeployerPromises } = useUtils(wager);
+
   console.log(wager);
-
-  const handleGetAccount = () => {
-    props.get_account_address();
-    DeployerPromises();
-  };
-
-  const handleWager = async (e) => {
+  const handleWager = (e) => {
     e.preventDefault();
     if (wager) {
-      console.log(wager);
       DeployerPromises(wager);
     }
-    setDeploy(true);
   };
 
-  console.log(props.wallet);
-  if (props.wallet) {
-    if (props.wallet !== null || props.wallet !== undefined) {
-      window.location.href = "/home";
-    }
-  }
+  // console.log(props.wallet);
+  // if (props.wallet) {
+  //   if (props.wallet !== null || props.wallet !== undefined) {
+  //     setDeploy(true);
+  //   }
+  // }
 
   return (
     <div
@@ -46,7 +40,8 @@ function Deployer(props) {
             <div>
               <h5 className="text-center text-4xl font-bold">Deployer</h5>
             </div>
-            {deploy ? (
+
+            {!deploy ? (
               <div>
                 <CustomButton
                   text={
@@ -54,7 +49,10 @@ function Deployer(props) {
                   }
                   className="bg-green-600 text-white font-bold p-4 rounded-md uppercase"
                   block
-                  onClick={handleGetAccount}
+                  onClick={() => {
+                    props.get_account_address();
+                    setDeploy(true);
+                  }}
                 />
               </div>
             ) : (
@@ -63,13 +61,12 @@ function Deployer(props) {
                   type="number"
                   placeholder="Default Wager"
                   className="p-4 w-full"
-                  value={wager}
                   name="wager"
-                  onChange={handleInputChange}
+                  value={wager}
+                  onChange={(e) => setWager(e.target.value)}
                 />
                 <CustomButton
-                  type="Deploy Contract"
-                  onClick={() => {}}
+                  type="submit"
                   text="Set Wager"
                   className="bg-green-600 text-white font-bold p-4 rounded-md uppercase"
                   block

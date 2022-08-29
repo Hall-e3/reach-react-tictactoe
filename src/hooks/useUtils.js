@@ -4,18 +4,13 @@ import * as backend from "../build/index.main.mjs";
 import { useSelector } from "react-redux";
 const reach = loadStdlib("ETH");
 
-export default function useUtils() {
+export const useUtils = (wager) => {
   const { wallet } = useSelector((state) => state.metaMask);
+  console.log(wallet);
+
   const ctcPlayerX = wallet?.contract(backend);
   const ctcPlayerO = wallet?.contract(backend, ctcPlayerX.getInfo());
 
-  console.log(wallet);
-
-  const [wager, setWager] = React.useState("");
-  console.log(wager);
-  const handleInputChange = (e) => {
-    setWager(e.target.value);
-  };
   const API = async (name) => {
     const ctc = wallet.contract(backend, await ctcPlayerX.getInfo());
     const acceptWager = async () => {
@@ -38,7 +33,7 @@ export default function useUtils() {
     winner = async (winner) => {
       console.log(winner);
       try {
-        const winarr = ["Player1", "Player2", "Draw"];
+        const winarr = ["PlayerX", "PlayerO", "Draw"];
         await this.ctc.apis.Admin.winner(winner);
         console.log(` The winner is ${winarr[winner % 3]}`);
       } catch (error) {
@@ -46,7 +41,9 @@ export default function useUtils() {
       }
     };
   }
-  const Admin = new Admins();
+
+  const Admin = new Admins(wallet, ctcPlayerX);
+
   const DeployerPromises = async () => {
     try {
       await Promise.all([
@@ -73,14 +70,10 @@ export default function useUtils() {
   // await P1.acceptWager();
   // await P2.acceptWager();
 
-  // await Adm.winner(0);
-
   // console.log("Goodbye, Deployer and Api!");
   return {
-    wager,
     Admin,
-    handleInputChange,
     API,
     DeployerPromises,
   };
-}
+};
